@@ -1,14 +1,12 @@
 package org.qydata.main;
 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.qydata.po.ApiCost;
-import org.qydata.tools.CalendarAssistTool;
+import org.qydata.tools.CalendarTools;
+import org.qydata.tools.SqlSessionUtil;
 
-import java.io.InputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,49 +16,54 @@ import java.util.Map;
  */
 public class Entrance {
 
-    public static void main(String[] args) {
-
-        String resource = "mybatis.xml";
-        InputStream is = Entrance.class.getClassLoader().getResourceAsStream(resource);
-        SqlSessionFactory sessionFactory = new SqlSessionFactoryBuilder().build(is);
-        SqlSession session = sessionFactory.openSession();
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-            Map<String,Object> mapDelete = new HashMap<>();
-            mapDelete.put("years", CalendarAssistTool.getCurrentYear());
-            mapDelete.put("months",CalendarAssistTool.getCurrentMonth());
-            mapDelete.put("days",CalendarAssistTool.getCurrentDay());
-            String statementDelete = "org.qydata.mapper.ApiCostMapper.deleteApiConsume";
-            int flag = session.delete(statementDelete,mapDelete);
-            session.commit();
-            String statementSelect = "org.qydata.mapper.ApiCostMapper.queryApiConsume";
-            Map<String, Object> mapSelect = new HashMap<>();
-            List<ApiCost> apiCostList = session.selectList(statementSelect, mapSelect);
-            List<ApiCost> apiCosts = new ArrayList<>();
-            if (apiCostList != null && apiCostList.size() >0){
-                for (int i = 0; i < apiCostList.size(); i++) {
-                    ApiCost apiCostResult = apiCostList.get(i);
-                    ApiCost apiCost = new ApiCost();
-                    apiCost.setApiId(apiCostResult.getApiId());
-                    apiCost.setYears(apiCostResult.getYears());
-                    apiCost.setMonths(apiCostResult.getMonths());
-                    apiCost.setDays(apiCostResult.getDays());
-                    apiCost.setTotleCost(apiCostResult.getTotleCost());
-                    apiCost.setUsageAmount(apiCostResult.getUsageAmount());
-                    apiCost.setFeeAmount(apiCostResult.getFeeAmount());
-                    apiCost.setConsuTime(sdf.parse(apiCostResult.getYears()+"/"+apiCostResult.getMonths()+"/"+apiCostResult.getDays()));
-                    apiCosts.add(apiCost);
-                }
-                //执行增加操作
-                String statementInsert = "org.qydata.mapper.ApiCostMapper.insertApiConsume";
-                int result = session.insert(statementInsert, apiCosts);
-                //增删改操作一定要提交事务
-                session.commit();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally{
-            session.close();
-        }
+    public static void delete(){
+        SqlSession session = SqlSessionUtil.masterSqlSession();
+        Map<String,Object> mapDelete = new HashMap<>();
+        mapDelete.put("consuTime", CalendarTools.getCurrentPreviousTime());
+        String statementDelete = "org.qydata.mapper.ApiCostMapper.deleteApiConsume";
+        session.delete(statementDelete,mapDelete);
+        session.commit();
+        session.close();
     }
+
+    public static List<ApiCost> query(){
+        SqlSession session = SqlSessionUtil.slaveSqlSession();
+        String statementSelect = "org.qydata.mapper.ApiCostMapper.queryApiConsume";
+        Map<String, Object> mapSelect = new HashMap<>();
+        mapSelect.put("beginDate", CalendarTools.getCurrentPreviousTime() + " 00:00:00");
+        mapSelect.put("endDate",CalendarTools.getCurrentTime());
+        System.out.println(mapSelect.get("beginDate"));
+        System.out.println(mapSelect.get("endDate"));
+        List<ApiCost> apiCostList = session.selectList(statementSelect, mapSelect);
+        session.close();
+        return apiCostList;
+    }
+
+    public static void insert(List<ApiCost> list) throws ParseException {
+        SqlSession session = SqlSessionUtil.masterSqlSession();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        if (list == null || list.size() <= 0){
+            return;
+        }
+        for (ApiCost api : list) {
+            api.setApiId(api.getApiId());
+            api.setYears(api.getYears());
+            api.setMonths(api.getMonths());
+            api.setDays(api.getDays());
+            api.setTotleCost(api.getTotleCost());
+            api.setUsageAmount(api.getUsageAmount());
+            api.setFeeAmount(api.getFeeAmount());
+            api.setConsuTime(sdf.parse(api.getYears()+"/"+api.getMonths()+"/"+api.getDays()));
+        }
+        String statementInsert = "org.qydata.mapper.ApiCostMapper.insertApiConsume";
+        session.insert(statementInsert, list);
+        session.commit();
+        session.close();
+    }
+
+    public static void main(String[] args) throws ParseException {
+        Entrance.delete();
+        Entrance.insert(Entrance.query());
+    }
+
 }
