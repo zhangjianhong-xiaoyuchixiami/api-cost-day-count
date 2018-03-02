@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.qydata.mapper.CompareDataMapper">
+
+    <resultMap id="data_map" type="org.qydata.entity.Data">
+        <result column="id" property="id"></result>
+        <result column="content" property="content"></result>
+    </resultMap>
+
+    <select id="compareData" resultMap="data_map" parameterType="map">
+
+        SELECT
+          id,
+          content
+        FROM
+          qydata.CustomerRequestLog
+        WHERE
+        customerId != 128
+
+        ORDER BY id DESC
+        limit #{i}, #{j}
+
+    </select>
+
+    <insert id="insertData" parameterType="list">
+
+        INSERT IGNORE
+        `ty`.`TaiYueData`
+        (`customerReqLogId`, `mobile`, `bid`, `createTime`)
+        VALUES
+        <foreach collection="list" separator="," item="item" index="index">
+            (#{item.id}, #{item.mobile}, #{item.bid}, #{item.date})
+        </foreach>
+
+    </insert>
+
+    <select id="readData" resultType="String" parameterType="map">
+
+        SELECT
+        mobile
+        FROM
+        ty.TaiYueData
+        WHERE
+        bid = #{bid}
+        limit #{i}, #{j}
+
+    </select>
+
+    <!--//手动取-->
+    <select id="queryData" resultType="String" parameterType="map">
+
+        SELECT
+        mobile
+        FROM
+        ty.TaiYueData
+        WHERE
+        bid = #{bid}
+        LIMIT #{i},#{j}
+
+    </select>
+
+
+    <select id="selectBid" resultType="int">
+
+        SELECT
+        id
+        FROM
+        ty.TaiYueDataBatch
+        GROUP BY
+        id DESC
+        LIMIT 1
+
+    </select>
+
+    <insert id="insertBid" parameterType="string" >
+
+        INSERT INTO
+        ty.TaiYueDataBatch
+        (`explain`)
+        VALUE
+        (#{String})
+
+    </insert>
+
+    <update id="setCounti" parameterType="int">
+        UPDATE
+        qyextra.tycount
+        SET `i` = #{nimei}
+        WHERE
+        id = 1
+    </update>
+
+    <update id="setCountj" parameterType="int">
+        UPDATE
+        qyextra.tycount
+        SET `j` = #{nimei}
+        WHERE
+        id = 1
+    </update>
+
+    <select id="queryI" parameterType="int" resultType="int">
+
+        SELECT
+        `i`
+        FROM
+        qyextra.tycount
+        WHERE
+        id = #{int}
+
+    </select>
+
+    <select id="queryJ" parameterType="int" resultType="int">
+
+        SELECT
+        `j`
+        FROM
+        qyextra.tycount
+        WHERE
+        id = #{int}
+    </select>
+
+    <select id="getMobile" parameterType="map" resultMap="data_map">
+
+        SELECT
+          id,
+          content
+        FROM
+          qydata.CustomerRequestLog
+        WHERE
+        customerId = #{customerId}
+        AND
+        createTime >= #{beginDate}
+        <![CDATA[
+              AND createTime < #{endDate}
+            ]]>
+        limit #{i}, #{j}
+
+    </select>
+
+
+    <select id="countData" parameterType="int" resultType="int">
+
+        SELECT
+        count(id)
+        FROM
+        ty.TaiYueData
+        WHERE
+        bid = #{nimei}
+
+    </select>
+</mapper>

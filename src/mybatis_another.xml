@@ -2,16 +2,27 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
+    <!--<typeAliases>
+        <typeAlias type="com.yeyouluo.mybatis.druid.utils.DruidDataSourceFactory"
+                   alias="DRUID" />
+    </typeAliases>-->
 
     <environments default="work">
         <environment id="work">
-            <transactionManager type="JDBC"/>
+            <transactionManager type="JDBC" /> <!-- 配置数据库连接信息 -->
             <dataSource type="POOLED">
-                <!--泰岳数据     数据库-->
-                <property name="driver" value="com.mysql.jdbc.Driver" />
-                <property name="url" value="jdbc:mysql://43.243.130.44:22023" />
-                <property name="username" value="ty_draw_02" />
+               <!-- <property name="driver" value="com.mysql.jdbc.Driver" />
+                <property name="url" value="jdbc:mysql://192.168.1.99:3310" />
+                <property name="username" value="ty_draw_02"/>
                 <property name="password" value="ad#gg*mi0saeV" />
+                <property name="poolMaximumIdleConnections" value="0"/>
+                <property name="poolMaximumActiveConnections" value="100"/>-->
+
+                <property name="driver" value="com.mysql.jdbc.Driver" />
+                <property name="url" value="jdbc:mysql://43.243.130.44:52150" />
+                <property name="username" value="qy-read" />
+                <property name="password" value="09cxj$iweEWA!" />
+                <!--<property name="poolMaximumIdleConnections" value="0"/>-->
                 <!--<property name="poolMaximumActiveConnections" value="100"/>-->
 
                <!-- &lt;!&ndash; 在任意时间存在的活动（也就是正在使用）连接的数量 &ndash;&gt;
@@ -46,12 +57,14 @@
 
             </dataSource>
 
-            <!--<dataSource type="DRUID">
+
+
+           <!-- <dataSource type="DRUID">
                 &lt;!&ndash; value属性值引用db.properties配置文件中配置的值 &ndash;&gt;
                 <property name="driver" value="com.mysql.jdbc.Driver" />
-                <property name="url" value="jdbc:mysql://43.243.130.44:3306" />
-                <property name="username" value="ty_draw_02" />
-                <property name="password" value="ad#gg*mi0saeV" />
+                <property name="url" value="jdbc:mysql://43.243.130.44:52150" />
+                <property name="username" value="qy-read" />
+                <property name="password" value="09cxj$iweEWA!" />
             </dataSource>-->
 
         </environment>

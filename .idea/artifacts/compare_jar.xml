@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="compare:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/compare_jar</output-path>
+    <root id="archive" name="compare.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/src/org/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="compare" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../新建文件夹/mybatis-3.2.7.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../新建文件夹/mysql-connector-java-5.1.39.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

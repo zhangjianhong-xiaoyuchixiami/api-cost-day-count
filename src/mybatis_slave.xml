@@ -2,19 +2,68 @@
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-    <environments default="development">
-        <environment id="development">
+    <environments default="work">
+        <environment id="work">
             <transactionManager type="JDBC" /> <!-- 配置数据库连接信息 -->
             <dataSource type="POOLED">
+               <!-- <property name="driver" value="com.mysql.jdbc.Driver" />
+                <property name="url" value="jdbc:mysql://192.168.1.99:3310" />
+                <property name="username" value="ty_draw_02"/>
+                <property name="password" value="ad#gg*mi0saeV" />
+                <property name="poolMaximumIdleConnections" value="0"/>
+                <property name="poolMaximumActiveConnections" value="100"/>-->
+                <!--外网从库-->
                 <property name="driver" value="com.mysql.jdbc.Driver" />
-                <property name="url" value="jdbc:mysql://192.168.1.100:3306" />
-                <property name="username" value="qyfinance_2" />
-                <property name="password" value="KIoknX8$n5" />
+                <property name="url" value="jdbc:mysql://116.62.243.16:3306" />
+                <property name="username" value="qy-read" />
+                <property name="password" value="s#fd*kj90"/>
+
+                <!--<property name="poolMaximumActiveConnections" value="100"/>-->
+
+               <!-- &lt;!&ndash; 在任意时间存在的活动（也就是正在使用）连接的数量 &ndash;&gt;
+
+                <property name="poolMaximumActiveConnections" value="10"/>
+
+                &lt;!&ndash; 任意时间存在的空闲连接数 &ndash;&gt;
+
+                <property name="poolMaximumIdleConnections" value="5"/>
+
+                &lt;!&ndash; 在被强制返回之前，池中连接被检查的时间 &ndash;&gt;
+
+                <property name="poolMaximumCheckoutTime" value="20000"/>
+
+                &lt;!&ndash; 这是给连接池一个打印日志状态机会的低层次设置，还有重新尝试获得连接，这些情况下往往需要很长时间（为了避免连接池没有配置时静默失败） &ndash;&gt;
+
+                <property name="poolTimeToWait" value="20000"/>
+
+                &lt;!&ndash; 发送到数据的侦测查询，用来验证连接是否正常工作，并且准备接受请求。 &ndash;&gt;
+
+                <property name="poolPingQuery" value="NO PING QUERY SET"/>
+
+                &lt;!&ndash; 这是开启或禁用侦测查询。如果开启，你必须用一个合法的SQL语句（最好是很快速的）设置poolPingQuery属性 &ndash;&gt;
+
+                <property name="poolPingEnabled" value="true"/>
+
+                <property name="poolPingQuery" value="select 1"/>
+
+                &lt;!&ndash; 这是用来配置poolPingQuery多次时间被用一次。这可以被设置匹配标准的数据库连接超时时间，来避免不必要的侦测 &ndash;&gt;
+
+                <property name="poolPingConnectionsNotUsedFor" value="3600000"/>-->
+
             </dataSource>
+
+            <!--<dataSource type="DRUID">
+                &lt;!&ndash; value属性值引用db.properties配置文件中配置的值 &ndash;&gt;
+                <property name="driver" value="com.mysql.jdbc.Driver" />
+                <property name="url" value="jdbc:mysql://43.243.130.44:52120" />
+                <property name="username" value="qy-read" />
+                <property name="password" value="09cxj$iweEWA!" />
+            </dataSource>-->
+
         </environment>
     </environments>
 
     <mappers>
-        <mapper resource="org/qydata/mapper/ApiCostMapper.xml"/>
+        <mapper resource="org/qydata/mapper/CompareDataMapper.xml"/>
     </mappers>
 </configuration>

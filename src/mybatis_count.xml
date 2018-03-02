@@ -7,14 +7,14 @@
             <transactionManager type="JDBC" /> <!-- 配置数据库连接信息 -->
             <dataSource type="POOLED">
                 <property name="driver" value="com.mysql.jdbc.Driver" />
-                <property name="url" value="jdbc:mysql://192.168.111.147:3306" />
-                <property name="username" value="test_a" />
-                <property name="password" value="KIoknX8$n4" />
+                <property name="url" value="jdbc:mysql://47.98.42.31:4000" />
+                <property name="username" value="qy-excel" />
+                <property name="password" value="df%6hj9Lh" />
             </dataSource>
         </environment>
     </environments>
 
     <mappers>
-        <mapper resource="org/qydata/mapper/ApiCostMapper.xml"/>
+        <mapper resource="org/qydata/mapper/CompareDataMapper.xml"/>
     </mappers>
 </configuration>
