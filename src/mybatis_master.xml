@@ -9,9 +9,9 @@
             <dataSource type="POOLED">
                 <!--泰岳数据     数据库-->
                 <property name="driver" value="com.mysql.jdbc.Driver" />
-                <property name="url" value="jdbc:mysql://43.243.130.44:22023" />
-                <property name="username" value="ty_draw_02" />
-                <property name="password" value="ad#gg*mi0saeV" />
+                <property name="url" value="jdbc:mysql://47.98.42.31:4000" />
+                <property name="username" value="app-ty" />
+                <property name="password" value="fa2$6f@hy9" />
                 <!--<property name="poolMaximumActiveConnections" value="100"/>-->
 
                <!-- &lt;!&ndash; 在任意时间存在的活动（也就是正在使用）连接的数量 &ndash;&gt;

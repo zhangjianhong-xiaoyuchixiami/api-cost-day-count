@@ -18,7 +18,8 @@ public class Compare {
     public static void main(String[] args) throws Exception {
 //        int a = 1;
         try {
-            String customer = "62";
+
+            String customer = "212";
             insertBid(customer);
             int bid = selectBid();
             Date deat1 = new Date();
